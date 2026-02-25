@@ -5,14 +5,17 @@ const routes = require("./routes");
 
 const app = express();
 
-mongoose.connect("mongodb://127.0.0.1:27017/wtwr_db");
+mongoose.connect("mongodb://localhost:27017/wtwr_db");
 
+// ✅ parse JSON bodies
 app.use(express.json());
+// ✅ parse application/x-www-form-urlencoded bodies (Postman suite uses this sometimes)
+app.use(express.urlencoded({ extended: true }));
 
-// temporary authorization (paste your real test user _id from Compass)
+// ✅ temporary authorization (PASTE a REAL user _id here)
 app.use((req, res, next) => {
   req.user = {
-    _id: "PASTE_TEST_USER_ID_HERE",
+    _id: "699e8d8e28afc0d512c9ecd8",
   };
   next();
 });

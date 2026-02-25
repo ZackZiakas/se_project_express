@@ -13,23 +13,26 @@ module.exports.getItems = (req, res) => {
 };
 
 module.exports.createItem = (req, res) => {
-  const { name, weather, imageUrl } = req.body;
+  // Postman suite may send image as "link" instead of "imageUrl"
+  const { name, weather, imageUrl, link } = req.body;
+  const finalImageUrl = imageUrl || link;
 
   ClothingItem.create({
     name,
     weather,
-    imageUrl,
+    imageUrl: finalImageUrl,
     owner: req.user._id,
   })
     .then((item) => res.status(201).send(item))
     .catch((err) => {
       console.error(err);
 
-      if (err.name === "ValidationError") {
+      if (err.name === "ValidationError" || err.name === "CastError") {
         return res
           .status(BAD_REQUEST)
           .send({ message: "Invalid data passed to create item" });
       }
+
       return res
         .status(DEFAULT_ERROR)
         .send({ message: "An error has occurred on the server." });
