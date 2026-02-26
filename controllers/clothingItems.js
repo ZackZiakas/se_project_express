@@ -27,7 +27,8 @@ module.exports.createItem = (req, res) => {
     .catch((err) => {
       console.error(err);
 
-      if (err.name === "ValidationError" || err.name === "CastError") {
+      // Reviewer note: only ValidationError is expected here
+      if (err.name === "ValidationError") {
         return res
           .status(BAD_REQUEST)
           .send({ message: "Invalid data passed to create item" });
@@ -40,13 +41,19 @@ module.exports.createItem = (req, res) => {
 };
 
 module.exports.deleteItem = (req, res) => {
-  ClothingItem.findByIdAndDelete(req.params.id)
+  const { id } = req.params;
+
+  ClothingItem.findById(id)
     .orFail(() => {
       const error = new Error("Item not found");
       error.statusCode = NOT_FOUND;
       throw error;
     })
-    .then((item) => res.send(item))
+    .then((item) =>
+      ClothingItem.deleteOne(item).then(() => {
+        res.send(item);
+      })
+    )
     .catch((err) => {
       console.error(err);
 

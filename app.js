@@ -7,12 +7,10 @@ const app = express();
 
 mongoose.connect("mongodb://localhost:27017/wtwr_db");
 
-// ✅ parse JSON bodies
+// parse JSON bodies only
 app.use(express.json());
-// ✅ parse application/x-www-form-urlencoded bodies (Postman suite uses this sometimes)
-app.use(express.urlencoded({ extended: true }));
 
-// ✅ temporary authorization (PASTE a REAL user _id here)
+// temporary authorization
 app.use((req, res, next) => {
   req.user = {
     _id: "699e8d8e28afc0d512c9ecd8",
