@@ -13,7 +13,11 @@ const {
 module.exports.createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
 
-  bcrypt
+  if (!name || !avatar || !email || !password) {
+    return res.status(BAD_REQUEST).send({ message: "Invalid data" });
+  }
+
+  return bcrypt
     .hash(password, 10)
     .then((hash) =>
       User.create({
@@ -49,7 +53,13 @@ module.exports.createUser = (req, res) => {
 module.exports.login = (req, res) => {
   const { email, password } = req.body;
 
-  User.findUserByCredentials(email, password)
+  if (!email || !password) {
+    return res
+      .status(BAD_REQUEST)
+      .send({ message: "Email and password are required" });
+  }
+
+  return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
         expiresIn: "7d",
@@ -57,8 +67,16 @@ module.exports.login = (req, res) => {
 
       res.send({ token });
     })
-    .catch(() => {
-      res.status(UNAUTHORIZED).send({ message: "Incorrect email or password" });
+    .catch((err) => {
+      if (err.message === "Incorrect email or password") {
+        return res
+          .status(UNAUTHORIZED)
+          .send({ message: "Incorrect email or password" });
+      }
+
+      return res
+        .status(DEFAULT_ERROR)
+        .send({ message: "An error has occurred on the server." });
     });
 };
 
