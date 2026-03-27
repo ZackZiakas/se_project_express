@@ -10,7 +10,6 @@ const {
 router.get("/", getItems);
 router.post("/", createItem);
 router.delete("/:id", deleteItem);
-
 router.put("/:id/likes", likeItem);
 router.delete("/:id/likes", unlikeItem);
 

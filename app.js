@@ -1,23 +1,24 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 
+const { createUser, login } = require("./controllers/users");
+const auth = require("./middlewares/auth");
 const routes = require("./routes");
+const { getItems } = require("./controllers/clothingItems");
 
 const app = express();
 
 mongoose.connect("mongodb://localhost:27017/wtwr_db");
 
-// parse JSON bodies only
+app.use(cors());
 app.use(express.json());
 
-// temporary authorization
-app.use((req, res, next) => {
-  req.user = {
-    _id: "699e8d8e28afc0d512c9ecd8",
-  };
-  next();
-});
+app.post("/signin", login);
+app.post("/signup", createUser);
+app.get("/items", getItems);
 
+app.use(auth);
 app.use("/", routes);
 
 const { PORT = 3001 } = process.env;

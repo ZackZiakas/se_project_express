@@ -1,5 +1,10 @@
 const ClothingItem = require("../models/clothingItem");
-const { BAD_REQUEST, NOT_FOUND, DEFAULT_ERROR } = require("../utils/errors");
+const {
+  BAD_REQUEST,
+  FORBIDDEN,
+  NOT_FOUND,
+  DEFAULT_ERROR,
+} = require("../utils/errors");
 
 module.exports.getItems = (req, res) => {
   ClothingItem.find({})
@@ -13,7 +18,6 @@ module.exports.getItems = (req, res) => {
 };
 
 module.exports.createItem = (req, res) => {
-  // Postman suite may send image as "link" instead of "imageUrl"
   const { name, weather, imageUrl, link } = req.body;
   const finalImageUrl = imageUrl || link;
 
@@ -27,7 +31,6 @@ module.exports.createItem = (req, res) => {
     .catch((err) => {
       console.error(err);
 
-      // Reviewer note: only ValidationError is expected here
       if (err.name === "ValidationError") {
         return res
           .status(BAD_REQUEST)
@@ -49,20 +52,24 @@ module.exports.deleteItem = (req, res) => {
       error.statusCode = NOT_FOUND;
       throw error;
     })
-    .then((item) =>
-      ClothingItem.deleteOne(item).then(() => {
-        res.send(item);
-      })
-    )
-    .catch((err) => {
-      console.error(err);
+    .then((item) => {
+      if (item.owner.toString() !== req.user._id) {
+        return res.status(FORBIDDEN).send({ message: "Forbidden" });
+      }
 
+      return ClothingItem.findByIdAndDelete(id).then((deletedItem) =>
+        res.send(deletedItem)
+      );
+    })
+    .catch((err) => {
       if (err.name === "CastError") {
         return res.status(BAD_REQUEST).send({ message: "Invalid item id" });
       }
+
       if (err.statusCode === NOT_FOUND) {
         return res.status(NOT_FOUND).send({ message: "Item not found" });
       }
+
       return res
         .status(DEFAULT_ERROR)
         .send({ message: "An error has occurred on the server." });
