@@ -19,3 +19,5 @@ Before committing your code, make sure you edit the file `sprint.txt` in the roo
 - **validator** — URL validation for `avatar` and `imageUrl`
 - **ESLint (airbnb-base) + Prettier** — code style and linting
 - **Nodemon** — hot reload during development
+
+loom link for video- https://www.loom.com/share/d61d985fd7b846c0ba6c0a1936c51977
