@@ -1,23 +1,47 @@
 # WTWR (What to Wear?): Back End
 
-The back-end project is focused on creating a server for the WTWR application. You’ll gain a deeper understanding of how to work with databases, set up security and testing, and deploy web applications on a remote machine. The eventual goal is to create a server with an API and user authorization.
+The back-end project is focused on creating a server for the WTWR application. The API supports user registration, login, authorization, clothing item management, likes, and profile updates.
+
+## Deployment
+
+Backend API: https://api.http://wtwr-class-demo.jumpingcrab.com/  
+Frontend Website: https://http://wtwr-class-demo.jumpingcrab.com/
+
+## Repository Links
+
+Frontend GitHub Repository: https://github.com/ZackZiakas/se_project_react
+Backend GitHub Repository: https://github.com/ZackZiakas/se_project_express
+
+## Project Pitch Video
+
+Project 15 Video Pitch: https://www.loom.com/share/d61d985fd7b846c0ba6c0a1936c51977
 
 ## Running the Project
 
-`npm run start` — to launch the server
+`npm run start` — launches the server on `localhost:3001`
 
-`npm run dev` — to launch the server with the hot reload feature
+`npm run dev` — launches the server on `localhost:3001` with hot reload
 
-### Testing
-
-Before committing your code, make sure you edit the file `sprint.txt` in the root folder. The file `sprint.txt` should contain the number of the sprint you're currently working on. For ex. 12
+`npm run lint` — runs ESLint
 
 ## Technologies & Techniques
 
 - **Node.js + Express** — REST API server and routing
 - **MongoDB + Mongoose** — database, schemas/models, validation, and queries
+- **JWT** — user authorization
+- **bcryptjs** — password hashing
+- **Celebrate/Joi** — request validation
 - **validator** — URL validation for `avatar` and `imageUrl`
+- **Winston/express-winston** — request and error logging
+- **PM2** — process manager for deployment
+- **Nginx** — reverse proxy and static frontend serving
 - **ESLint (airbnb-base) + Prettier** — code style and linting
 - **Nodemon** — hot reload during development
 
-loom link for video- https://www.loom.com/share/d61d985fd7b846c0ba6c0a1936c51977
+## Environment Variables
+
+Create a `.env` file in the project root with:
+
+```env
+JWT_SECRET=your-secret-key
+```
