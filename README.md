@@ -4,8 +4,9 @@ The back-end project is focused on creating a server for the WTWR application. T
 
 ## Deployment
 
-Backend API: https://api.http://wtwr-class-demo.jumpingcrab.com/  
-Frontend Website: https://http://wtwr-class-demo.jumpingcrab.com/
+Backend API: https://api.wtwr-class-demo.jumpingcrab.com/
+
+Frontend Website: https://wtwr-class-demo.jumpingcrab.com/
 
 ## Repository Links
 

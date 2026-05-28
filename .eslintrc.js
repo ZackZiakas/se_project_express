@@ -17,9 +17,10 @@ module.exports = {
   ],
   parserOptions: {
     ecmaVersion: "latest",
-    sourceType: "module",
+    sourceType: "script",
   },
   rules: {
+    "no-unused-vars": ["error", { argsIgnorePattern: "next" }],
     "no-console": "off",
     "no-underscore-dangle": ["error", { allow: ["_id"] }],
   },

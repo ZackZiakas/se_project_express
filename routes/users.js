@@ -1,4 +1,5 @@
 const router = require("express").Router();
+
 const { getCurrentUser, updateProfile } = require("../controllers/users");
 const { validateUpdateProfile } = require("../middlewares/validation");
 
