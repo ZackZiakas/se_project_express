@@ -10,7 +10,9 @@ const errorHandler = require("./middlewares/error-handler");
 
 const app = express();
 
-mongoose.connect("mongodb://localhost:27017/wtwr_db");
+mongoose.connect(
+  process.env.MONGODB_URI || "mongodb://localhost:27017/wtwr_db"
+);
 
 app.use(cors());
 app.use(express.json());
